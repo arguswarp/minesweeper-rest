@@ -1,1 +1,37 @@
+version: '0.1'
+
 services:
+  app:
+    container_name: minesweeper
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      - DB_URL=$DB_URL
+      - DB_USERNAME=$DB_USERNAME
+      - DB_PASSWORD=$DB_PASSWORD
+    ports:
+      - 8080:8080
+    networks:
+      - minesweeper-net
+    restart: unless-stopped
+  db:
+    image: postgres:$PG_VERSION
+    container_name: minesweeper-db
+    environment:
+      - POSTGRES_USER=$DB_USERNAME
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_PORT=$DB_PORT
+      - POSTGRES_VERSION=$PG_VERSION
+    ports:
+      - $DB_PORT:5432
+    networks:
+      - minesweeper-net
+    volumes:
+      - minesweeper_data:/var/lib/postgresql/data
+volumes:
+  minesweeper_data:
+networks:
+  minesweeper-net:

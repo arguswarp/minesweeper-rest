@@ -1,12 +1,9 @@
 package com.argus.minesweeperrest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,23 +11,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Builder
-public class GameDTO {
-    @JsonProperty(value = "game_id")
-    private UUID gameID;
+public class NewGameRequest {
     @Min(1)
     @Max(30)
-    @JsonProperty(value = "width")
     private Integer width;
     @Min(1)
     @Max(30)
-    @JsonProperty(value = "height")
     private Integer height;
     //валидация от 1 до width * height - 1
-    @JsonProperty(value = "mines_count")
+    @JsonProperty("mines_count")
     private Integer minesCount;
-    @JsonProperty(value = "completed")
-    private Boolean completed;
-    @JsonProperty(value = "field")
-    private String[][] field;
 }

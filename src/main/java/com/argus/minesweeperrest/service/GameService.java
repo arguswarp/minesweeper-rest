@@ -4,9 +4,10 @@ import com.argus.minesweeperrest.entity.Game;
 import com.argus.minesweeperrest.model.Cell;
 import com.argus.minesweeperrest.model.FieldGenerator;
 import com.argus.minesweeperrest.repository.GameRepository;
-import com.argus.minesweeperrest.util.GameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class GameService {
@@ -14,6 +15,7 @@ public class GameService {
     private final GameRepository gameRepository;
 
     private final FieldGenerator fieldGenerator;
+
     @Autowired
     public GameService(GameRepository gameRepository, FieldGenerator fieldGenerator) {
         this.gameRepository = gameRepository;
@@ -22,15 +24,14 @@ public class GameService {
 
     public Game generateField(Game game) {
         Cell[][] field = fieldGenerator.initializeField(game);
+        field = fieldGenerator.placeMines(game.getMinesCount(), field);
+        field = fieldGenerator.calculateValues(field);
         game.setField(field);
         return gameRepository.save(game);
     }
 
-    public Game get(String hashID) {
-        //из хэша в лонг преобразуем
-        long id = Long.parseLong(hashID);
-        //добавить эксепшн для базы данных
-        return gameRepository.findById(id).orElse(null);
+    public Game get(UUID uuid) {
+        return gameRepository.findByGameID(uuid);
     }
 
     public Game save(Game game) {

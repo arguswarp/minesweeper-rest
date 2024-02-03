@@ -1,5 +1,6 @@
 package com.argus.minesweeperrest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
