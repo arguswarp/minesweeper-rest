@@ -9,5 +9,9 @@ public class Cell {
 
     private String value;
 
+    private int x;
+
+    private int y;
+
     private boolean isMine;
 }

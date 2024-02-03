@@ -2,17 +2,11 @@ package com.argus.minesweeperrest.util;
 
 import com.argus.minesweeperrest.entity.Game;
 import com.argus.minesweeperrest.model.Cell;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
-@Component
 public class GameUtil {
-
-    public static String countMinesAround(Cell cell) {
-        //считаем количество мин вокруг
-        return "";
-    }
 
     public static long countMines(Game game) {
         return Arrays.stream(game.getField())
@@ -22,12 +16,20 @@ public class GameUtil {
 
     public static String[][] convertToStringArray(Game game) {
         Cell[][] field = game.getField();
-        String[][] newField = new String[game.getWidth()][game.getHeight()];
-        for (int i = 0; i < game.getWidth(); i++) {
-            for (int j = 0; j < game.getHeight(); j++) {
+        String[][] newField = new String[game.getHeight()][game.getWidth()];
+        for (int i = 0; i < game.getHeight(); i++) {
+            for (int j = 0; j < game.getWidth(); j++) {
                 newField[i][j] = field[i][j].getValue();
             }
         }
         return newField;
     }
+
+    public static Cell[][] doForEachCell(Cell[][] field, Consumer<Cell> consumer) {
+        Arrays.stream(field).forEach(cells -> Arrays.stream(cells)
+                .forEach(consumer));
+        return field;
+    }
+
+
 }
