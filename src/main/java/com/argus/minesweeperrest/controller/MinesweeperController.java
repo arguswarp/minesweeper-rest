@@ -4,18 +4,18 @@ import com.argus.minesweeperrest.dto.GameDTO;
 import com.argus.minesweeperrest.dto.NewGameRequest;
 import com.argus.minesweeperrest.dto.TurnRequest;
 import com.argus.minesweeperrest.entity.Game;
-import com.argus.minesweeperrest.model.Cell;
+import com.argus.minesweeperrest.exception.ErrorResponseException;
 import com.argus.minesweeperrest.service.GameService;
 import com.argus.minesweeperrest.util.GameUtil;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -30,24 +30,18 @@ public class MinesweeperController {
         this.modelMapper = modelMapper;
     }
 
+    @CrossOrigin
     @PostMapping("/new")
-    public GameDTO newGame(@Valid @RequestBody NewGameRequest request) {
-        log.info(request.toString());
-        //инициализация игры
+    public GameDTO newGame(@Valid @RequestBody NewGameRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            //TODO proper message for field errors
+            throw new ErrorResponseException(bindingResult.getFieldErrors().toString());
+        }
+        log.debug(request.toString());
         Game game = convertToGame(request);
-        game.setCompleted(false);
-        Game persistentGame = gameService.generateField(game);
-        log.info(game.toString());
-        persistentGame = gameService.save(persistentGame);
-        //TODO service must provide game with blank field, this is temporary
-        persistentGame.setField(GameUtil.doForEachCell(persistentGame.getField(), cell -> {
-
-            cell.setValue(" ");
-        }));
-        //валидация + респонс с ошибкой
-        //генерация поля
-        log.info(persistentGame.getGameID().toString() + " " + "game initialized");
-        return convertToGameDTO(persistentGame);
+        Game blankGame = gameService.generateField(game);
+        log.info("Game with id: " + blankGame.getGameID().toString() + " successfully initialized");
+        return convertToGameDTO(blankGame);
     }
 
     private Game convertToGame(NewGameRequest request) {
@@ -60,11 +54,18 @@ public class MinesweeperController {
         return gameDTO;
     }
 
+    @CrossOrigin
     @PostMapping("/turn")
     public Game doTurn(@Valid @RequestBody TurnRequest turnRequest) {
         Game game = gameService.get(turnRequest.getGameID());
         //проверяем позицию на поле
 
         return gameService.save(game);
+    }
+
+    @ExceptionHandler({ErrorResponseException.class})
+    private ResponseEntity<Object> handleException(ErrorResponseException exception) {
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", exception.getMessage()));
     }
 }

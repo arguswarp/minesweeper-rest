@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "game")
-@Data //mb change because mapper may not work
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

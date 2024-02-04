@@ -12,10 +12,10 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class NewGameRequest {
-    @Min(1)
+    @Min(2)
     @Max(30)
     private Integer width;
-    @Min(1)
+    @Min(2)
     @Max(30)
     private Integer height;
     //валидация от 1 до width * height - 1
