@@ -35,6 +35,10 @@ public class GameService {
         return game;
     }
 
+    public Game doTurn(int col, int row, Game game) {
+        return game;
+    }
+
     public Game get(UUID uuid) {
         return gameRepository.findByGameID(uuid);
     }
