@@ -27,7 +27,7 @@ class GameToGameDTOTest {
         field = fieldGenerator.initializeField(game);
         field = fieldGenerator.placeMines(game.getMinesCount(), field);
         field = fieldGenerator.calculateValues(field);
-        game.setField(field);
+        game.setFieldSource(field);
 
         GameDTO gameDTO = convertToGameDTO(game);
 

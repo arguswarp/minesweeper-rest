@@ -69,14 +69,15 @@ public class MinesweeperController {
 
     @CrossOrigin
     @PostMapping("/turn")
-    public GameDTO doTurn(@Valid @RequestBody TurnRequest turnRequest) {
+    public GameDTO doTurn(@Valid @RequestBody TurnRequest turnRequest, BindingResult bindingResult) {
         //TODO check for boundaries
         int col = turnRequest.getCol();
         int row = turnRequest.getRow();
         Game game = gameService.get(turnRequest.getGameID());
+        if (game.getCompleted()) {
+            throw new ErrorResponseException("Игра уже завершена");
+        }
         game = gameService.doTurn(col, row, game);
-        //проверяем позицию на поле
-
         return convertToGameDTO(game);
     }
 

@@ -27,14 +27,14 @@ class FieldGeneratorTest {
                 .height(height)
                 .minesCount(mines)
                 .build();
-        game.setField(fieldGenerator.initializeField(game));
+        game.setFieldSource(fieldGenerator.initializeField(game));
     }
 
     @Test
     void WhenMinesPlaced_MinesCountIs_10() {
-        Cell[][] field = game.getField();
+        Cell[][] field = game.getFieldSource();
         field = fieldGenerator.placeMines(game.getMinesCount(), field);
-        game.setField(field);
+        game.setFieldSource(field);
         log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
 
         Assertions.assertNotNull(game);
@@ -43,19 +43,19 @@ class FieldGeneratorTest {
 
     @Test
     void WhenValuesCalculated_FieldsAreEquals() {
-        Cell[][] field = game.getField();
+        Cell[][] field = game.getFieldSource();
         field = fieldGenerator.placeMines(game.getMinesCount(), field);
-        game.setField(field);
+        game.setFieldSource(field);
         log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
 
         field = fieldGenerator.calculateValues(field);
-        game.setField(field);
+        game.setFieldSource(field);
 
         Assertions.assertNotNull(game);
         log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
     }
 
-    private String fieldToString(String[][] array) {
+    public static String fieldToString(String[][] array) {
         StringBuilder result = new StringBuilder();
         Arrays.stream(array).forEach(strings -> result.append("|")
                 .append(String.join("|", strings))

@@ -14,4 +14,6 @@ public class Cell {
     private int y;
 
     private boolean isMine;
+
+    private boolean revealed;
 }

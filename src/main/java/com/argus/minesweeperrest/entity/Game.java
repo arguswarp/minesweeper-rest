@@ -1,8 +1,7 @@
 package com.argus.minesweeperrest.entity;
 
 import com.argus.minesweeperrest.model.Cell;
-import io.hypersistence.utils.hibernate.type.array.EnumArrayType;
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +31,11 @@ public class Game {
     private Integer minesCount;
     @Column
     private Boolean completed;
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    @JsonIgnore
+    private Cell[][] fieldSource;
+
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Cell[][] field;
