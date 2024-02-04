@@ -1,9 +1,11 @@
 package com.argus.minesweeperrest.model;
 
 import com.argus.minesweeperrest.entity.Game;
+import com.argus.minesweeperrest.exception.ErrorResponseException;
 import com.argus.minesweeperrest.util.GameUtil;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 
 import java.util.Random;
 

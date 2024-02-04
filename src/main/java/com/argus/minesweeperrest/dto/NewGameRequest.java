@@ -12,13 +12,12 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class NewGameRequest {
-    @Min(2)
-    @Max(30)
+    @Min(value = 2, message = "Ширина должна быть больше 2 ячеек")
+    @Max(value = 30, message = "Ширина должна быть не более 30 ячеек")
     private Integer width;
-    @Min(2)
-    @Max(30)
+    @Min(value = 2, message = "Высота должна быть больше 2 ячеек")
+    @Max(value = 30, message = "Высота должна быть не более 30 ячеек")
     private Integer height;
-    //валидация от 1 до width * height - 1
     @JsonProperty("mines_count")
     private Integer minesCount;
 }

@@ -11,11 +11,16 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -33,9 +38,17 @@ public class MinesweeperController {
     @CrossOrigin
     @PostMapping("/new")
     public GameDTO newGame(@Valid @RequestBody NewGameRequest request, BindingResult bindingResult) {
+        int minesCount = request.getMinesCount();
+        int maxMines = request.getHeight() * request.getWidth() - 1;
+        if (minesCount > maxMines || minesCount <= 0) {
+            bindingResult.addError(new FieldError(request.getClass().getName(),
+                    Objects.requireNonNull(ReflectionUtils.findMethod(NewGameRequest.class, "getMinesCount")).getName(),
+                    "Мин должно быть больше 0 и меньше количества ячеек (" + maxMines + ")"));
+        }
         if (bindingResult.hasErrors()) {
-            //TODO proper message for field errors
-            throw new ErrorResponseException(bindingResult.getFieldErrors().toString());
+            throw new ErrorResponseException(bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(". ")));
         }
         log.debug(request.toString());
         Game game = convertToGame(request);
