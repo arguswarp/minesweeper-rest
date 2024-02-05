@@ -1,7 +1,6 @@
 package com.argus.minesweeperrest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -26,7 +25,6 @@ public class GameDTO {
     @Max(30)
     @JsonProperty(value = "height")
     private Integer height;
-    //валидация от 1 до width * height - 1
     @JsonProperty(value = "mines_count")
     private Integer minesCount;
     @JsonProperty(value = "completed")

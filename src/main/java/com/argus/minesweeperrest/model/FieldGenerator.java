@@ -1,13 +1,12 @@
 package com.argus.minesweeperrest.model;
 
 import com.argus.minesweeperrest.entity.Game;
+import com.argus.minesweeperrest.model.enums.CellValues;
 import com.argus.minesweeperrest.util.GameUtil;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
-@NoArgsConstructor
 @Component
 public class FieldGenerator {
     private final Random random = new Random();
@@ -20,8 +19,8 @@ public class FieldGenerator {
             int x = random.nextInt(0, width);
             int y = random.nextInt(0, height);
             Cell cell = field[y][x];
-            if (!cell.getValue().equals("X")) {
-                cell.setValue("X");
+            if (!cell.getValue().equals(CellValues.MINE_LOST.getValues())) {
+                cell.setValue(CellValues.MINE_LOST.getValues());
                 cell.setMine(true);
                 t++;
             }
@@ -35,7 +34,7 @@ public class FieldGenerator {
             for (int j = 0; j < game.getWidth(); j++) {
                 field[i][j] = Cell.builder()
                         .isMine(false)
-                        .value(" ")
+                        .value(CellValues.BLANK.getValues())
                         .x(j)
                         .y(i)
                         .build();
