@@ -12,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -91,11 +89,5 @@ public class MinesweeperController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining(". ")));
         }
-    }
-
-    @ExceptionHandler({ErrorResponseException.class})
-    private ResponseEntity<Object> handleException(ErrorResponseException exception) {
-        return ResponseEntity.badRequest()
-                .body(Map.of("error", exception.getMessage()));
     }
 }
