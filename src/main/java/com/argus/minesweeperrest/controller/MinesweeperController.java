@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -34,12 +33,6 @@ public class MinesweeperController {
     @CrossOrigin
     @PostMapping("/new")
     public GameDTO newGame(@Valid @RequestBody NewGameRequest request, BindingResult bindingResult) {
-        int minesCount = request.getMinesCount();
-        int maxMines = request.getHeight() * request.getWidth() - 1;
-        if (minesCount > maxMines || minesCount <= 0) {
-            bindingResult.addError(new FieldError(request.getClass().getName(), "minesCount",
-                    "Мин должно быть больше 0 и меньше количества ячеек (" + maxMines + ")"));
-        }
         checkValidationErrors(bindingResult);
         log.debug(request.toString());
         Game game = convertToGame(request);
@@ -64,16 +57,6 @@ public class MinesweeperController {
         int col = request.getCol();
         int row = request.getRow();
         Game game = gameService.get(request.getGameID());
-        int width = game.getWidth();
-        int height = game.getHeight();
-        if (col > width - 1 || col < 0) {
-            bindingResult.addError(new FieldError(request.getClass().getName(), "col",
-                    "Номер столбца не может быть меньше 0 или больше ширины игрового поля(" + (width - 1) + ")"));
-        }
-        if (row > height - 1 || row < 0) {
-            bindingResult.addError(new FieldError(request.getClass().getName(), "col",
-                    "Номер строки не может быть меньше 0 или больше высоты игрового поля(" + (height - 1) + ")"));
-        }
         checkValidationErrors(bindingResult);
         if (game.getCompleted()) {
             throw new ErrorResponseException("Игра уже завершена");
