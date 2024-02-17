@@ -1,4 +1,4 @@
-package com.argus.minesweeperrest.annotation;
+package com.argus.minesweeperrest.annotation.validation;
 
 import com.argus.minesweeperrest.validation.MaxMinesValidator;
 import jakarta.validation.Constraint;

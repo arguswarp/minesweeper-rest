@@ -11,9 +11,9 @@ import java.util.Map;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ErrorResponseException.class})
-    private ResponseEntity<Object> handleException(ErrorResponseException exception) {
-        log.error(exception.getMessage());
+    @ExceptionHandler({GameErrorException.class, DatabaseException.class, ValidationException.class})
+    private ResponseEntity<Object> handleException(RuntimeException exception) {
+        log.error(exception.getMessage(), exception);
         return ResponseEntity.badRequest()
                 .body(Map.of("error", exception.getMessage()));
     }

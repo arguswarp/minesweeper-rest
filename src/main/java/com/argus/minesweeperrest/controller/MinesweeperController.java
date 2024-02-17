@@ -4,7 +4,8 @@ import com.argus.minesweeperrest.dto.GameDTO;
 import com.argus.minesweeperrest.dto.NewGameRequest;
 import com.argus.minesweeperrest.dto.TurnRequest;
 import com.argus.minesweeperrest.entity.Game;
-import com.argus.minesweeperrest.exception.ErrorResponseException;
+import com.argus.minesweeperrest.exception.GameErrorException;
+import com.argus.minesweeperrest.exception.ValidationException;
 import com.argus.minesweeperrest.service.GameService;
 import com.argus.minesweeperrest.util.GameUtil;
 import jakarta.validation.Valid;
@@ -54,12 +55,12 @@ public class MinesweeperController {
     @CrossOrigin
     @PostMapping("/turn")
     public GameDTO doTurn(@Valid @RequestBody TurnRequest request, BindingResult bindingResult) {
-        int col = request.getCol();
+        final int col = request.getCol();
         int row = request.getRow();
         Game game = gameService.get(request.getGameID());
         checkValidationErrors(bindingResult);
         if (game.getCompleted()) {
-            throw new ErrorResponseException("Игра уже завершена");
+            throw new GameErrorException("Игра уже завершена");
         }
         game = gameService.doTurn(col, row, game);
         log.info("Game with id: " + game.getGameID().toString() + " new turn;" + "completion status: " + game.getCompleted());
@@ -68,7 +69,7 @@ public class MinesweeperController {
 
     private void checkValidationErrors(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ErrorResponseException(bindingResult.getAllErrors().stream()
+            throw new ValidationException(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining(". ")));
         }

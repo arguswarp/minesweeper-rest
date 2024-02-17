@@ -1,6 +1,6 @@
 package com.argus.minesweeperrest.dto;
 
-import com.argus.minesweeperrest.annotation.MaxMines;
+import com.argus.minesweeperrest.annotation.validation.MaxMines;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

@@ -1,6 +1,6 @@
 package com.argus.minesweeperrest.validation;
 
-import com.argus.minesweeperrest.annotation.MaxMines;
+import com.argus.minesweeperrest.annotation.validation.MaxMines;
 import com.argus.minesweeperrest.dto.NewGameRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

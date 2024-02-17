@@ -1,7 +1,8 @@
 package com.argus.minesweeperrest.service;
 
 import com.argus.minesweeperrest.entity.Game;
-import com.argus.minesweeperrest.exception.ErrorResponseException;
+import com.argus.minesweeperrest.exception.DatabaseException;
+import com.argus.minesweeperrest.exception.GameErrorException;
 import com.argus.minesweeperrest.model.Cell;
 import com.argus.minesweeperrest.model.FieldGenerator;
 import com.argus.minesweeperrest.model.TurnHelper;
@@ -50,7 +51,7 @@ public class GameService {
         Cell cellTarget = game.getField()[row][col];
 
         if (cellTarget.isRevealed()) {
-            throw new ErrorResponseException("Эта ячейка уже открыта");
+            throw new GameErrorException("Эта ячейка уже открыта");
         }
 
         Cell[][] fieldSource = game.getFieldSource();
@@ -86,6 +87,6 @@ public class GameService {
 
     public Game get(UUID uuid) {
         return gameRepository.findByGameID(uuid)
-                .orElseThrow(() -> new ErrorResponseException("Игры с таким UUID не существует"));
+                .orElseThrow(() -> new DatabaseException("Игры с таким UUID - " + uuid.toString() + " не существует"));
     }
 }

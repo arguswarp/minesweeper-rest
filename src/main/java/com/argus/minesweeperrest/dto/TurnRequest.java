@@ -1,6 +1,6 @@
 package com.argus.minesweeperrest.dto;
 
-import com.argus.minesweeperrest.annotation.FieldBorders;
+import com.argus.minesweeperrest.annotation.validation.FieldBorders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import lombok.*;
