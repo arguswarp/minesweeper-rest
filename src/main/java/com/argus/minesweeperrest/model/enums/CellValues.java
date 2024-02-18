@@ -5,13 +5,13 @@ public enum CellValues {
     MINE_LOST("X"),
     MINE_WIN("M");
 
-    private final String values;
+    private final String value;
 
-    CellValues(String values) {
-        this.values = values;
+    CellValues(String value) {
+        this.value = value;
     }
 
-    public String getValues() {
-        return values;
+    public String getValue() {
+        return value;
     }
 }

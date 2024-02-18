@@ -51,4 +51,8 @@ public class GameUtil {
                 .append("\n"));
         return result.toString();
     }
+
+    public static String getCellValue(int col, int row, Cell[][] field) {
+        return field[row][col].getValue();
+    }
 }

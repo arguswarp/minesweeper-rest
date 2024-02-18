@@ -75,7 +75,7 @@ public class GameService {
             game.setCompleted(true);
             GameUtil.doForEachCell(fieldSource, cell -> {
                 if (cell.isMine()) {
-                    cell.setValue(CellValues.MINE_WIN.getValues());
+                    cell.setValue(CellValues.MINE_WIN.getValue());
                 }
             });
             game.setField(fieldSource);

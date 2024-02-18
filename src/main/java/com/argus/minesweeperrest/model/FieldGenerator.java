@@ -19,8 +19,8 @@ public class FieldGenerator {
             int x = random.nextInt(0, width);
             int y = random.nextInt(0, height);
             Cell cell = field[y][x];
-            if (!cell.getValue().equals(CellValues.MINE_LOST.getValues())) {
-                cell.setValue(CellValues.MINE_LOST.getValues());
+            if (!cell.getValue().equals(CellValues.MINE_LOST.getValue())) {
+                cell.setValue(CellValues.MINE_LOST.getValue());
                 cell.setMine(true);
                 t++;
             }
@@ -34,7 +34,7 @@ public class FieldGenerator {
             for (int j = 0; j < game.getWidth(); j++) {
                 field[i][j] = Cell.builder()
                         .isMine(false)
-                        .value(CellValues.BLANK.getValues())
+                        .value(CellValues.BLANK.getValue())
                         .x(j)
                         .y(i)
                         .build();

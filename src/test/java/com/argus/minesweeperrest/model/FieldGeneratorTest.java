@@ -35,7 +35,7 @@ class FieldGeneratorTest {
         Cell[][] field = game.getFieldSource();
         field = fieldGenerator.placeMines(game.getMinesCount(), field);
         game.setFieldSource(field);
-        log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
+        log.info("\n" + GameUtil.fieldToString(GameUtil.convertToStringArray(game)));
 
         Assertions.assertNotNull(game);
         Assertions.assertEquals(10, GameUtil.countMines(game));
@@ -46,21 +46,12 @@ class FieldGeneratorTest {
         Cell[][] field = game.getFieldSource();
         field = fieldGenerator.placeMines(game.getMinesCount(), field);
         game.setFieldSource(field);
-        log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
+        log.info("\n" + GameUtil.fieldToString(GameUtil.convertToStringArray(game)));
 
         field = fieldGenerator.calculateValues(field);
         game.setFieldSource(field);
 
         Assertions.assertNotNull(game);
-        log.info("\n" + fieldToString(GameUtil.convertToStringArray(game)));
-    }
-
-    public static String fieldToString(String[][] array) {
-        StringBuilder result = new StringBuilder();
-        Arrays.stream(array).forEach(strings -> result.append("|")
-                .append(String.join("|", strings))
-                .append("|")
-                .append("\n"));
-        return result.toString();
+        log.info("\n" + GameUtil.fieldToString(GameUtil.convertToStringArray(game)));
     }
 }
